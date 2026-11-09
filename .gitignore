@@ -1,0 +1,32 @@
+# Build artifacts
+**/bin/
+**/obj/
+
+# Rider / VS / VS Code
+.idea/
+.vs/
+*.suo
+*.user
+*.userosscache
+*.sln.docstates
+.vscode/
+
+# OS files
+.DS_Store
+Thumbs.db
+
+# Test local secrets override
+**/appsettings.test.local.json
+
+# NuGet / tooling
+*.nupkg
+*.snupkg
+artifacts/
+TestResults/
+
+# Logs
+*.log
+
+# Local vendor artifacts and extracted bundles
+docs/vendor/AC_SIM_2_10/
+src/MixSystems.VneCashRecycler/Documentation/
