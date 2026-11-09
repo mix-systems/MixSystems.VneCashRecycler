@@ -1,0 +1,73 @@
+name: Release
+
+# Manual only: publishing is a deliberate act, not a side effect of merging.
+on:
+  workflow_dispatch:
+
+permissions:
+  contents: write  # tag the published commit
+  id-token: write  # OIDC token exchanged for a short-lived NuGet key (trusted publishing)
+
+concurrency:
+  group: nuget-publish-main
+  cancel-in-progress: false
+
+jobs:
+  publish:
+    runs-on: ubuntu-latest
+    if: github.ref == 'refs/heads/main'
+    environment: nuget  # the nuget.org trusted-publishing policy is bound to this environment
+
+    env:
+      DOTNET_NOLOGO: true
+      DOTNET_CLI_TELEMETRY_OPTOUT: true
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup .NET
+        uses: actions/setup-dotnet@v4
+        with:
+          dotnet-version: 10.0.x
+
+      - name: Restore unit tests
+        run: dotnet restore tests/MixSystems.VneCashRecycler.UnitTests/MixSystems.VneCashRecycler.UnitTests.csproj
+
+      - name: Build unit tests
+        run: dotnet build tests/MixSystems.VneCashRecycler.UnitTests/MixSystems.VneCashRecycler.UnitTests.csproj -c Release --no-restore
+
+      - name: Run unit tests
+        run: dotnet test tests/MixSystems.VneCashRecycler.UnitTests/MixSystems.VneCashRecycler.UnitTests.csproj -c Release --no-build
+
+      - name: Restore integration tests
+        run: dotnet restore tests/MixSystems.VneCashRecycler.IntegrationTests/MixSystems.VneCashRecycler.IntegrationTests.csproj
+
+      - name: Build integration tests
+        run: dotnet build tests/MixSystems.VneCashRecycler.IntegrationTests/MixSystems.VneCashRecycler.IntegrationTests.csproj -c Release --no-restore
+
+      - name: Run integration tests
+        run: dotnet test tests/MixSystems.VneCashRecycler.IntegrationTests/MixSystems.VneCashRecycler.IntegrationTests.csproj -c Release --no-build
+
+      - name: Pack
+        run: dotnet pack src/MixSystems.VneCashRecycler/MixSystems.VneCashRecycler.csproj -c Release --no-build -o ./artifacts
+
+      - name: NuGet login (OIDC to short-lived key)
+        uses: NuGet/login@v1
+        id: login
+        with:
+          user: i7aKeT
+
+      - name: Push to NuGet
+        run: |
+          dotnet nuget push "./artifacts/*.nupkg" \
+            --source "https://api.nuget.org/v3/index.json" \
+            --api-key "${{ steps.login.outputs.NUGET_API_KEY }}"
+
+      - name: Tag the published version
+        run: |
+          VERSION=$(grep -oPm1 '(?<=<Version>)[^<]+' src/MixSystems.VneCashRecycler/MixSystems.VneCashRecycler.csproj)
+          git config user.name  "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git tag -a "v$VERSION" -m "MixSystems.VneCashRecycler $VERSION"
+          git push origin "v$VERSION"

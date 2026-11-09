@@ -1,0 +1,60 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>net10.0</TargetFramework>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <Nullable>enable</Nullable>
+    <LangVersion>preview</LangVersion>
+    <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
+    <GenerateDocumentationFile>true</GenerateDocumentationFile>
+    <NoWarn>$(NoWarn);1591;1573</NoWarn>
+    <AssemblyName>MixSystems.VneCashRecycler</AssemblyName>
+    <RootNamespace>MixSystems.VneCashRecycler</RootNamespace>
+    <PublishRepositoryUrl>true</PublishRepositoryUrl>
+    <IncludeSymbols>true</IncludeSymbols>
+    <SymbolPackageFormat>snupkg</SymbolPackageFormat>
+    <EmbedUntrackedSources>true</EmbedUntrackedSources>
+
+    <Version>1.0.0</Version>
+    <AssemblyVersion>1.0.0.0</AssemblyVersion>
+    <FileVersion>1.0.0.0</FileVersion>
+
+    <PackageId>MixSystems.VneCashRecycler</PackageId>
+    <Title>MIX Systems VNE Cash Recycler SDK</Title>
+    <Description>.NET SDK for VNE cash recycler integrations, protocol commands, and typed payment flows.</Description>
+    <Authors>MIX Systems</Authors>
+    <Company>MIX Systems</Company>
+    <Copyright>Copyright (c) 2026 MIX Systems</Copyright>
+    <PackageProjectUrl>https://github.com/mix-systems/MixSystems.VneCashRecycler</PackageProjectUrl>
+    <RepositoryUrl>https://github.com/mix-systems/MixSystems.VneCashRecycler.git</RepositoryUrl>
+    <RepositoryType>git</RepositoryType>
+    <PackageRequireLicenseAcceptance>false</PackageRequireLicenseAcceptance>
+    <PackageLicenseExpression>MIT</PackageLicenseExpression>
+    <PackageReadmeFile>README.md</PackageReadmeFile>
+    <PackageIcon>icon.png</PackageIcon>
+    <PackageTags>vne;cash-recycler;selfcash;pos;sdk;payment;cash-handling</PackageTags>
+    <PackageReleaseNotes>First release under the MIX Systems name. Same code as SYT.VneCashRecycler 1.0.0-rc.1; the namespace is now MixSystems.VneCashRecycler.</PackageReleaseNotes>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <InternalsVisibleTo Include="MixSystems.VneCashRecycler.IntegrationTests" />
+    <InternalsVisibleTo Include="MixSystems.VneCashRecycler.UnitTests" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Microsoft.Extensions.DependencyInjection.Abstractions" Version="10.0.2" />
+    <PackageReference Include="Microsoft.Extensions.Http" Version="10.0.2" />
+    <PackageReference Include="Microsoft.Extensions.Logging.Abstractions" Version="10.0.2" />
+    <PackageReference Include="Microsoft.Extensions.Options" Version="10.0.2" />
+    <PackageReference Include="Polly" Version="8.6.5" />
+    <PackageReference Include="Polly.Extensions.Http" Version="3.0.0" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <None Include="..\..\README.md" Pack="true" PackagePath="\" Link="README.md" />
+    <None Include="icon.png" Pack="true" PackagePath="\" />
+    <None Include="..\..\LICENSE" Pack="true" PackagePath="\" />
+    <None Include="..\..\docs\images\anatoliy-yermakov.jpeg" Pack="true" PackagePath="docs/images/" Link="docs/images/anatoliy-yermakov.jpeg" />
+  </ItemGroup>
+
+</Project>
